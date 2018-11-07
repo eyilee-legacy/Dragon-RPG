@@ -719,31 +719,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114672550735798666, guid: 52e58dd5412ee5c488cfd7fe9afd5e31,
-        type: 2}
-      propertyPath: walkCursor
-      value: 
-      objectReference: {fileID: 2800000, guid: cf4db667147a3ca4e92ba5bbd1154ff7, type: 3}
-    - target: {fileID: 114672550735798666, guid: 52e58dd5412ee5c488cfd7fe9afd5e31,
-        type: 2}
-      propertyPath: unknownCursor
-      value: 
-      objectReference: {fileID: 2800000, guid: 0076051db6986824287ab71fdbad02c3, type: 3}
-    - target: {fileID: 114672550735798666, guid: 52e58dd5412ee5c488cfd7fe9afd5e31,
-        type: 2}
-      propertyPath: targetCursor
-      value: 
-      objectReference: {fileID: 2800000, guid: 49f171bcb5956364fa013a5c3ca9b1bb, type: 3}
-    - target: {fileID: 114672550735798666, guid: 52e58dd5412ee5c488cfd7fe9afd5e31,
-        type: 2}
-      propertyPath: cursorHotSpot.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114672550735798666, guid: 52e58dd5412ee5c488cfd7fe9afd5e31,
-        type: 2}
-      propertyPath: cursorHotSpot.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52e58dd5412ee5c488cfd7fe9afd5e31, type: 2}
   m_IsPrefabAsset: 0

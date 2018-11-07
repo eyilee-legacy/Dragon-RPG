@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CameraRaycaster))]
 public class CursorAffordance : MonoBehaviour {
 
     [Header("Cursor Textures")]
@@ -16,10 +17,11 @@ public class CursorAffordance : MonoBehaviour {
 
     private void Start () {
         cameraRaycaster = GetComponent<CameraRaycaster>();
+        cameraRaycaster.OnLayerChangeObserver += OnLayerChange;
     }
 
-    private void Update () {
-        switch (cameraRaycaster.layerHit) {
+    private void OnLayerChange (Layer layer) {
+        switch (layer) {
             case Layer.RaycastEndStop:
                 Cursor.SetCursor(unknownCursor, cursorHotSpot, CursorMode.Auto);
                 break;

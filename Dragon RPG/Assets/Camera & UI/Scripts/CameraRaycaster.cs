@@ -1,43 +1,47 @@
 ﻿using UnityEngine;
 
 public class CameraRaycaster : MonoBehaviour {
-    public Layer[] layerPriorities = {
+    public readonly Layer[] layerPriorities = {
         Layer.Enemy,
         Layer.Walkable
     };
 
-    [SerializeField] float distanceToBackground = 100f;
-    Camera viewCamera;
-
-    RaycastHit m_hit;
-    public RaycastHit hit {
-        get { return m_hit; }
+    [SerializeField] private float distanceToBackground = 100f;
+    private Camera viewCamera;
+    private RaycastHit _hit;
+    public RaycastHit Hit {
+        get { return _hit; }
     }
 
-    Layer m_layerHit;
-    public Layer layerHit {
-        get { return m_layerHit; }
+    private Layer _layer;
+    public Layer LayerHit {
+        get { return _layer; }
     }
 
-    void Start () // TODO Awake?
-    {
+    public delegate void OnLayerChange (Layer layer);
+    public event OnLayerChange OnLayerChangeObserver;
+
+    private void Start () {
         viewCamera = Camera.main;
     }
 
-    void Update () {
+    private void Update () {
         // Look for and return priority layer hit
         foreach (Layer layer in layerPriorities) {
             var hit = RaycastForLayer(layer);
             if (hit.HasValue) {
-                m_hit = hit.Value;
-                m_layerHit = layer;
+                _hit = hit.Value;
+                if (layer != LayerHit) {
+                    _layer = layer;
+                    OnLayerChangeObserver(layer);
+                }
                 return;
             }
         }
 
         // Otherwise return background hit
-        m_hit.distance = distanceToBackground;
-        m_layerHit = Layer.RaycastEndStop;
+        _hit.distance = distanceToBackground;
+        _layer = Layer.RaycastEndStop;
     }
 
     RaycastHit? RaycastForLayer (Layer layer) {
