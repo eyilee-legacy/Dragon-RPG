@@ -1074,6 +1074,7 @@ GameObject:
   - component: {fileID: 54305075295734598}
   - component: {fileID: 136702019608187892}
   - component: {fileID: 114250526088101762}
+  - component: {fileID: 114183958054685864}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
@@ -1197,6 +1198,22 @@ GameObject:
   - component: {fileID: 4323799741675528}
   m_Layer: 9
   m_Name: EthanLeftHandMiddle2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1939789111436284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4593350631025432}
+  - component: {fileID: 114929213319006468}
+  m_Layer: 9
+  m_Name: UI socket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1964,6 +1981,19 @@ Transform:
   m_Father: {fileID: 4763743414299810}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4593350631025432
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1939789111436284}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4855690614130530}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4600347023662366
 Transform:
   m_ObjectHideFlags: 1
@@ -2246,6 +2276,7 @@ Transform:
   - {fileID: 4061192449026422}
   - {fileID: 4837298788284746}
   - {fileID: 4564226509453346}
+  - {fileID: 4593350631025432}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2485,6 +2516,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114183958054685864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1829546245463848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0275f89b4ead35c41ac34f808623cb7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealthPoint: 100
 --- !u!114 &114250526088101762
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2504,6 +2547,19 @@ MonoBehaviour:
   m_MoveSpeedMultiplier: 1
   m_AnimSpeedMultiplier: 1.2
   m_GroundCheckDistance: 0.3
+--- !u!114 &114929213319006468
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1939789111436284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1946e1c1bae1c34ba2666ebb3463952, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyCanvasPrefab: {fileID: 1311539807392560, guid: 9a9d70d10b9331d469e57254147e0430,
+    type: 2}
 --- !u!136 &136702019608187892
 CapsuleCollider:
   m_ObjectHideFlags: 1

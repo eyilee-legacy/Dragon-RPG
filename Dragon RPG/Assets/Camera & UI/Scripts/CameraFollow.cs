@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
 
@@ -11,6 +9,6 @@ public class CameraFollow : MonoBehaviour {
     }
 
     private void LateUpdate () {
-        gameObject.transform.position = player.transform.position;
+        transform.position = player.transform.position;
     }
 }

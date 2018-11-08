@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(CameraRaycaster))]
 public class CursorAffordance : MonoBehaviour {
@@ -9,9 +7,6 @@ public class CursorAffordance : MonoBehaviour {
     [SerializeField] private Texture2D targetCursor = null;
     [SerializeField] private Texture2D unknownCursor = null;
     [SerializeField] private Texture2D walkCursor = null;
-
-    [Header("Other Setting")]
-    [SerializeField] private Vector2 cursorHotSpot = Vector2.zero;
 
     private CameraRaycaster cameraRaycaster;
 
@@ -23,13 +18,13 @@ public class CursorAffordance : MonoBehaviour {
     private void OnLayerChange (Layer layer) {
         switch (layer) {
             case Layer.RaycastEndStop:
-                Cursor.SetCursor(unknownCursor, cursorHotSpot, CursorMode.Auto);
+                Cursor.SetCursor(unknownCursor, Vector2.zero, CursorMode.Auto);
                 break;
             case Layer.Walkable:
-                Cursor.SetCursor(walkCursor, cursorHotSpot, CursorMode.Auto);
+                Cursor.SetCursor(walkCursor, Vector2.zero, CursorMode.Auto);
                 break;
             case Layer.Enemy:
-                Cursor.SetCursor(targetCursor, cursorHotSpot, CursorMode.Auto);
+                Cursor.SetCursor(targetCursor, Vector2.zero, CursorMode.Auto);
                 break;
             default:
                 break;
