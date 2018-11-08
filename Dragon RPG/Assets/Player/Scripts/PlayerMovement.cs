@@ -7,24 +7,23 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] float walkMoveStopRadius = 0.2f;
     [SerializeField] float attackMoveStopRadius = 5f;
 
-    private ThirdPersonCharacter thirdPersonCharacter;   // A reference to the ThirdPersonCharacter on the object
     private CameraRaycaster cameraRaycaster;
-    private Vector3 currentDistination;
-    private Vector3 clickPoint;
+    private ThirdPersonCharacter thirdPersonCharacter;
+    private Vector3 currentDestination;
+    private Vector3 destination;
 
     private bool isInDirectMode = false;
 
     private void Start () {
         cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
         thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
-        currentDistination = transform.position;
+        currentDestination = transform.position;
     }
 
-    // Fixed update is called in sync with physics
     private void FixedUpdate () {
         if (Input.GetKeyDown(KeyCode.G)) {
             isInDirectMode = !isInDirectMode;
-            currentDistination = transform.position;
+            currentDestination = transform.position;
         }
 
         if (isInDirectMode) {
@@ -46,13 +45,13 @@ public class PlayerMovement : MonoBehaviour {
 
     private void ProcessMouseMovement () {
         if (Input.GetMouseButton(0)) {
-            clickPoint = cameraRaycaster.Hit.point;
+            destination = cameraRaycaster.Hit.point;
             switch (cameraRaycaster.LayerHit) {
                 case Layer.Walkable:
-                    currentDistination = ShortDestination(clickPoint, walkMoveStopRadius);
+                    currentDestination = ShortDestination(destination, walkMoveStopRadius);
                     break;
                 case Layer.Enemy:
-                    currentDistination = ShortDestination(clickPoint, attackMoveStopRadius);
+                    currentDestination = ShortDestination(destination, attackMoveStopRadius);
                     break;
                 case Layer.RaycastEndStop:
                     break;
@@ -64,25 +63,25 @@ public class PlayerMovement : MonoBehaviour {
         WalkToDestination();
     }
 
-    private void WalkToDestination () {
-        Vector3 playerToClickPoint = currentDistination - transform.position;
-        if (playerToClickPoint.magnitude >= walkMoveStopRadius) {
-            thirdPersonCharacter.Move(playerToClickPoint, false, false);
-        } else {
-            thirdPersonCharacter.Move(Vector3.zero, false, false);
-        }
-    }
-
     private Vector3 ShortDestination (Vector3 destination, float shortening) {
         Vector3 reductionVector = (destination - transform.position).normalized * shortening;
         return destination - reductionVector;
     }
 
+    private void WalkToDestination () {
+        Vector3 toDestination = currentDestination - transform.position;
+        if (toDestination.magnitude >= walkMoveStopRadius) {
+            thirdPersonCharacter.Move(toDestination, false, false);
+        } else {
+            thirdPersonCharacter.Move(Vector3.zero, false, false);
+        }
+    }
+
     private void OnDrawGizmos () {
         Gizmos.color = Color.black;
-        Gizmos.DrawLine(transform.position, clickPoint);
-        Gizmos.DrawWireSphere(clickPoint, walkMoveStopRadius);
-
+        Gizmos.DrawLine(transform.position, destination);
+        Gizmos.DrawSphere(destination, 0.1f);
+        Gizmos.DrawSphere(currentDestination, 0.1f);
         Gizmos.DrawWireSphere(transform.position, attackMoveStopRadius);
     }
 }

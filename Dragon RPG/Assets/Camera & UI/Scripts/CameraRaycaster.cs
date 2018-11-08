@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 
 public class CameraRaycaster : MonoBehaviour {
-    public readonly Layer[] layerPriorities = {
+
+    private readonly Layer[] LayerPriorities = {
         Layer.Enemy,
         Layer.Walkable
     };
 
     [SerializeField] private float distanceToBackground = 100f;
+
     private Camera viewCamera;
+
     private RaycastHit _hit;
     public RaycastHit Hit {
         get { return _hit; }
@@ -26,33 +29,37 @@ public class CameraRaycaster : MonoBehaviour {
     }
 
     private void Update () {
-        // Look for and return priority layer hit
-        foreach (Layer layer in layerPriorities) {
-            var hit = RaycastForLayer(layer);
-            if (hit.HasValue) {
-                _hit = hit.Value;
-                if (layer != LayerHit) {
+        foreach (Layer layer in LayerPriorities) {
+            RaycastHit? raycastHit = RaycastForLayer(layer);
+            if (raycastHit.HasValue) {
+                _hit = raycastHit.Value;
+
+                if (layer != _layer) {
                     _layer = layer;
-                    OnLayerChangeObserver(layer);
+                    OnLayerChangeObserver(_layer);
                 }
+
                 return;
             }
         }
 
-        // Otherwise return background hit
-        _hit.distance = distanceToBackground;
         _layer = Layer.RaycastEndStop;
+        OnLayerChangeObserver(_layer);
     }
 
     RaycastHit? RaycastForLayer (Layer layer) {
-        int layerMask = 1 << (int)layer; // See Unity docs for mask formation
-        Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit raycastHit;
+        bool hasHit = Physics.Raycast(
+            viewCamera.ScreenPointToRay(Input.mousePosition),
+            out raycastHit,
+            distanceToBackground,
+            1 << (int)layer
+        );
 
-        RaycastHit hit; // used as an out parameter
-        bool hasHit = Physics.Raycast(ray, out hit, distanceToBackground, layerMask);
         if (hasHit) {
-            return hit;
+            return raycastHit;
         }
+
         return null;
     }
 }

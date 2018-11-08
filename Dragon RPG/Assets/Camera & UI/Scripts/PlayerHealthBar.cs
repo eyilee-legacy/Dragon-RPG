@@ -4,8 +4,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(RawImage))]
 public class PlayerHealthBar : MonoBehaviour {
 
-    RawImage healthBarRawImage;
     Player player;
+    RawImage healthBarRawImage;
 
     private void Start () {
         player = FindObjectOfType<Player>();
