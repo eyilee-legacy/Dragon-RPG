@@ -1073,9 +1073,11 @@ GameObject:
   - component: {fileID: 95829078011864218}
   - component: {fileID: 54305075295734598}
   - component: {fileID: 136702019608187892}
+  - component: {fileID: 195316012819945220}
   - component: {fileID: 114250526088101762}
   - component: {fileID: 114886361380713758}
   - component: {fileID: 114228178013638714}
+  - component: {fileID: 114111245830697408}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2487,6 +2489,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114111245830697408
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1829546245463848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!114 &114228178013638714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2529,8 +2543,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d816f3631edfca49b72b2d28d9fcad3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkMoveStopRadius: 0.25
-  attackMoveStopRadius: 5
 --- !u!136 &136702019608187892
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -2720,3 +2732,24 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0009998977, y: 0.007603839, z: 0.00028842688}
     m_Extent: {x: 0.80239844, y: 0.23826995, z: 0.5723474}
   m_DirtyAABB: 0
+--- !u!195 &195316012819945220
+NavMeshAgent:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1829546245463848}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 1
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

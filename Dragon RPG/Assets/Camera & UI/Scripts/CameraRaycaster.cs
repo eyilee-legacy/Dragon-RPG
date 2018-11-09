@@ -1,65 +1,73 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
+using System.Linq;
+using System.Collections.Generic;
 
 public class CameraRaycaster : MonoBehaviour {
+    // INSPECTOR PROPERTIES RENDERED BY CUSTOM EDITOR SCRIPT
+    [SerializeField] int[] layerPriorities;
 
-    private readonly Layer[] LayerPriorities = {
-        Layer.Enemy,
-        Layer.Walkable
-    };
+    float maxRaycastDepth = 100f; // Hard coded value
+    int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer terrain
 
-    [SerializeField] private float distanceToBackground = 100f;
+    // Setup delegates for broadcasting layer changes to other classes
+    public delegate void OnCursorLayerChange (int newLayer); // declare new delegate type
+    public event OnCursorLayerChange notifyLayerChangeObservers; // instantiate an observer set
 
-    private Camera viewCamera;
+    public delegate void OnClickPriorityLayer (RaycastHit raycastHit, int layerHit); // declare new delegate type
+    public event OnClickPriorityLayer notifyMouseClickObservers; // instantiate an observer set
 
-    private RaycastHit _hit;
-    public RaycastHit Hit {
-        get { return _hit; }
+
+    void Update () {
+        // Check if pointer is over an interactable UI element
+        if (EventSystem.current.IsPointerOverGameObject()) {
+            NotifyObserersIfLayerChanged(5);
+            return; // Stop looking for other objects
+        }
+
+        // Raycast to max depth, every frame as things can move under mouse
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] raycastHits = Physics.RaycastAll(ray, maxRaycastDepth);
+
+        RaycastHit? priorityHit = FindTopPriorityHit(raycastHits);
+        if (!priorityHit.HasValue) // if hit no priority object
+        {
+            NotifyObserersIfLayerChanged(0); // broadcast default layer
+            return;
+        }
+
+        // Notify delegates of layer change
+        var layerHit = priorityHit.Value.collider.gameObject.layer;
+        NotifyObserersIfLayerChanged(layerHit);
+
+        // Notify delegates of highest priority game object under mouse when clicked
+        if (Input.GetMouseButton(0)) {
+            notifyMouseClickObservers(priorityHit.Value, layerHit);
+        }
     }
 
-    private Layer _layer;
-    public Layer LayerHit {
-        get { return _layer; }
+    void NotifyObserersIfLayerChanged (int newLayer) {
+        if (newLayer != topPriorityLayerLastFrame) {
+            topPriorityLayerLastFrame = newLayer;
+            notifyLayerChangeObservers(newLayer);
+        }
     }
 
-    public delegate void OnLayerChange (Layer layer);
-    public event OnLayerChange OnLayerChangeObserver;
+    RaycastHit? FindTopPriorityHit (RaycastHit[] raycastHits) {
+        // Form list of layer numbers hit
+        List<int> layersOfHitColliders = new List<int>();
+        foreach (RaycastHit hit in raycastHits) {
+            layersOfHitColliders.Add(hit.collider.gameObject.layer);
+        }
 
-    private void Start () {
-        viewCamera = Camera.main;
-    }
-
-    private void Update () {
-        foreach (Layer layer in LayerPriorities) {
-            RaycastHit? raycastHit = RaycastForLayer(layer);
-            if (raycastHit.HasValue) {
-                _hit = raycastHit.Value;
-
-                if (layer != _layer) {
-                    _layer = layer;
-                    OnLayerChangeObserver(_layer);
+        // Step through layers in order of priority looking for a gameobject with that layer
+        foreach (int layer in layerPriorities) {
+            foreach (RaycastHit hit in raycastHits) {
+                if (hit.collider.gameObject.layer == layer) {
+                    return hit; // stop looking
                 }
-
-                return;
             }
         }
-
-        _layer = Layer.RaycastEndStop;
-        OnLayerChangeObserver(_layer);
-    }
-
-    RaycastHit? RaycastForLayer (Layer layer) {
-        RaycastHit raycastHit;
-        bool hasHit = Physics.Raycast(
-            viewCamera.ScreenPointToRay(Input.mousePosition),
-            out raycastHit,
-            distanceToBackground,
-            1 << (int)layer
-        );
-
-        if (hasHit) {
-            return raycastHit;
-        }
-
-        return null;
+        return null; // because cannot use GameObject? nullable
     }
 }
