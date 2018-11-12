@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 54715783584758466}
   - component: {fileID: 114229698012398468}
   m_Layer: 9
-  m_Name: RollerBall
+  m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,11 +96,11 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0.1
   m_AngularDrag: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &114229698012398468
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageCaused: 0
-  projectileSpeed: 10
+  projectileSpeed: 20
 --- !u!135 &135805110393338790
 SphereCollider:
   m_ObjectHideFlags: 1

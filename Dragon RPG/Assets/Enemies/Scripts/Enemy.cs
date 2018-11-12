@@ -7,8 +7,12 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private float maxHealthPoint = 100f;
     [SerializeField] private float attackRadius = 3f;
     [SerializeField] private float chaseRadius = 10f;
-    [SerializeField] private float damagePerShot = 10f;
-    [SerializeField] private float secondsPerShot = 1f;
+
+    [Tooltip("Damage per hit")]
+    [SerializeField] private float attackDamage = 10f;
+
+    [Tooltip("Attack times per second")]
+    [SerializeField] private float attackFrequency = 1f;
 
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private GameObject projectileSocket;
@@ -59,7 +63,7 @@ public class Enemy : MonoBehaviour, IDamageable
         while (true)
         {
             SpawnProjectile();
-            yield return new WaitForSeconds(secondsPerShot);
+            yield return new WaitForSeconds(attackFrequency);
         }
     }
 
@@ -67,7 +71,7 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         GameObject projectile = Instantiate(projectilePrefab, projectileSocket.transform.position, Quaternion.identity);
         Projectile projectileComponent = projectile.GetComponent<Projectile>();
-        projectileComponent.damageCaused = damagePerShot;
+        projectileComponent.damageCaused = attackDamage;
         Vector3 unitVectorToPlayer = (player.transform.position + aimOffset - projectileSocket.transform.position).normalized;
         projectile.GetComponent<Rigidbody>().velocity = unitVectorToPlayer * projectileComponent.projectileSpeed;
     }
@@ -78,7 +82,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
         if (currentHealthPoint <= 0)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 
