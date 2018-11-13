@@ -7,6 +7,8 @@ public class Projectile : MonoBehaviour
     public float damageCaused;
     public float projectileSpeed;
 
+    GameObject shooter;
+
     private void OnCollisionEnter(Collision collision)
     {
         Component damageableComponent = collision.gameObject.GetComponent(typeof(IDamageable));

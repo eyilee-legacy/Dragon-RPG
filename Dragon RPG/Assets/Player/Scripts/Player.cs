@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -6,13 +8,13 @@ public class Player : MonoBehaviour, IDamageable
     private const int enemyLayerNumber = 9;
 
     [SerializeField] private float maxHealthPoint = 100f;
+    [SerializeField] Weapon weaponInUse;
 
     float attackSpeed = 0.5f;
     float attackDamage = 10f;
     float attackRange = 2f;
     float lastHittime = 0f;
 
-    GameObject currentTarget;
     CameraRaycaster cameraRaycaster;
 
     private float currentHealthPoint;
@@ -21,9 +23,33 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Start()
     {
+        RegisterMouseClick();
+        currentHealthPoint = maxHealthPoint;
+        PutWeaponInHand();
+    }
+
+    private void PutWeaponInHand()
+    {
+        GameObject weaponPrefab = weaponInUse.GetWeaponPrefab();
+        var weaponSocket = RequestDominantHand();
+        GameObject weapon = Instantiate(weaponPrefab, weaponSocket.transform);
+        weapon.transform.localPosition = weaponInUse.gripTransform.localPosition;
+        weapon.transform.localRotation = weaponInUse.gripTransform.localRotation;
+    }
+
+    private GameObject RequestDominantHand()
+    {
+        DominantHand[] dominantHands = GetComponentsInChildren<DominantHand>();
+        int numberOfDominantHands = dominantHands.Length;
+        Assert.AreNotEqual(numberOfDominantHands, 0, "No DominantHand found on Player, Please add one.");
+        Assert.IsFalse(numberOfDominantHands > 1, "Multiple DominantHand scripts on Player, Please remove one.");
+        return dominantHands[0].gameObject;
+    }
+
+    private void RegisterMouseClick()
+    {
         cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
         cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
-        currentHealthPoint = maxHealthPoint;
     }
 
     public void TakeDamage(float damage)
@@ -41,7 +67,6 @@ public class Player : MonoBehaviour, IDamageable
             {
                 return;
             }
-            currentTarget = enemy;
             Enemy enemyComponemt = enemy.GetComponent<Enemy>();
             if (Time.time - lastHittime > attackSpeed)
             {

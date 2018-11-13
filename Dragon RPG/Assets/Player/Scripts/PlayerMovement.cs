@@ -11,8 +11,6 @@ public class PlayerMovement : MonoBehaviour
     private const int enemyLayerNumber = 9;
 
     private AICharacterControl aiCharacterControl;
-    private ThirdPersonCharacter thirdPersonCharacter;
-    private NavMeshAgent navMeshAgent;
 
     private CameraRaycaster cameraRaycaster;
 
@@ -21,8 +19,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         aiCharacterControl = GetComponent<AICharacterControl>();
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
         walkTarget = new GameObject("walkTarget");
     }
 
